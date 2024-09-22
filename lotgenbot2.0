@@ -1,0 +1,38 @@
+import telebot
+import random
+
+# Insira o token do seu bot aqui
+TOKEN = '7586504506:AAH8PGhqfWCQCIOaGZpit3bEPe9d_vNV7Zs'
+bot = telebot.TeleBot(TOKEN)
+
+# Função para gerar números aleatórios
+def gerar_numeros(tipo):
+    if tipo == 'quina':
+        return sorted(random.sample(range(1, 81), 5))
+    elif tipo == 'mega-sena':
+        return sorted(random.sample(range(1, 61), 6))
+    elif tipo == 'lotofacil':
+        return sorted(random.sample(range(1, 26), 15))
+
+# Comandos do bot
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    bot.reply_to(message, "Olá! Eu sou um bot gerador de números para a Quina, Mega-Sena e Lotofácil. Use os comandos /quina, /mega_sena ou /lotofacil para gerar números.")
+
+@bot.message_handler(commands=['quina'])
+def send_quina(message):
+    numeros = gerar_numeros('quina')
+    bot.reply_to(message, f'Números da Quina: {numeros}')
+
+@bot.message_handler(commands=['mega_sena'])
+def send_mega_sena(message):
+    numeros = gerar_numeros('mega-sena')
+    bot.reply_to(message, f'Números da Mega-Sena: {numeros}')
+
+@bot.message_handler(commands=['lotofacil'])
+def send_lotofacil(message):
+    numeros = gerar_numeros('lotofacil')
+    bot.reply_to(message, f'Números da Lotofácil: {numeros}')
+
+# Iniciar o bot
+bot.polling()
